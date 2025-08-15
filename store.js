@@ -1,20 +1,23 @@
-const productList = document.getElementById("product-list");
-const searchInput = document.getElementById("search");
-
 function renderProduct(doc) {
   const p = doc.data();
   if (!p.name.toLowerCase().includes(searchInput.value.toLowerCase())) return;
 
+  let stockBadge = "";
   let buyButton = "";
+
   if (p.quantity > 0) {
     buyButton = `<button class="buy-btn" onclick="buyProduct('${doc.id}', ${p.price})">Buy Now</button>`;
   } else {
+    stockBadge = `<div class="out-of-stock-badge">Out of Stock</div>`;
     buyButton = `<button class="buy-btn out" disabled>Out of Stock</button>`;
   }
 
   productList.innerHTML += `
-    <div class="product">
-      <img src="${p.image}" alt="${p.name}">
+    <div class="product ${p.quantity <= 0 ? 'out-product' : ''}">
+      <div class="product-img-container">
+        ${stockBadge}
+        <img src="${p.image}" alt="${p.name}">
+      </div>
       <h3>${p.name}</h3>
       ${p.discount > 0 ? `<p class="discount">Save $${p.discount}</p>` : ""}
       <p class="price">$${p.price}</p>
@@ -24,22 +27,16 @@ function renderProduct(doc) {
   `;
 }
 
-function loadProducts() {
-  db.collection("products").onSnapshot(snapshot => {
-    productList.innerHTML = "";
-    snapshot.forEach(renderProduct);
-  });
-}
-
 function buyProduct(id, price) {
-  // Extra protection
   db.collection("products").doc(id).get().then(doc => {
     if (!doc.exists || doc.data().quantity <= 0) {
       alert("Sorry, this product is out of stock.");
       return;
     }
     if (confirm(`Proceed to PayPal to pay $${price}?`)) {
-      window.open(`https://www.paypal.me/JhonJoross/${price}`, "_blank");
+      // Force USD
+      window.open(`https://www.paypal.com/paypalme/JhonJoross/${price}?currency_code=USD`, "_blank");
+
       setTimeout(() => {
         const productRef = db.collection("products").doc(id);
         db.runTransaction(t => t.get(productRef).then(doc => {
@@ -51,6 +48,3 @@ function buyProduct(id, price) {
     }
   });
 }
-
-searchInput.addEventListener("input", loadProducts);
-loadProducts();
