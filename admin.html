@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Xyoo GAG Store</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Admin Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+
+  <div>
+    <input id="pname" placeholder="Product Name">
+    <input id="pprice" placeholder="Price" type="number">
+    <input id="pdiscount" placeholder="Discount" type="number">
+    <input id="pqty" placeholder="Quantity" type="number">
+    <input id="pimage" placeholder="Image URL">
+    <button onclick="addProduct()">Add Product</button>
+  </div>
+
+  <div id="admin-products"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
