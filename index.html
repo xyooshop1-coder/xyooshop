@@ -1,48 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Grow a Garden Pets - Store</title>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "xyoo-shop.firebaseapp.com",
-    projectId: "xyoo-shop",
-    storageBucket: "xyoo-shop.firebasestorage.app",
-    messagingSenderId: "671592025442",
-    appId: "1:671592025442:web:a8795522a2ae9762b2b03b",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  async function loadProducts() {
-    const productList = document.getElementById("products");
-    const querySnapshot = await getDocs(collection(db, "products"));
-    productList.innerHTML = "";
-    querySnapshot.forEach((doc) => {
-      let data = doc.data();
-      let item = document.createElement("div");
-      item.innerHTML = `
-        <h3>${data.name}</h3>
-        <p>Price: $${data.price}</p>
-        <button onclick="window.location.href='https://paypal.me/JhonJoross/${data.price}'">Buy Now</button>
-      `;
-      productList.appendChild(item);
-    });
-  }
-
-  loadProducts();
-</script>
+  <meta charset="UTF-8">
+  <title>Xyoo GAG Store</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Grow a Garden Pets Store</h1>
-<div id="products"></div>
-<a href="login.html">Admin Login</a>
+  <nav>
+    <h1>Xyoo GAG Store</h1>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <input type="text" id="search" placeholder="Search products...">
+  <div id="product-list"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="store.js"></script>
 </body>
 </html>
-
