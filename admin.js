@@ -1,42 +1,32 @@
-auth.onAuthStateChanged(user => {
-  if (!user) location.href = "login.html";
-  else loadAdminProducts();
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Xyoo GAG Store</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="firebase-config.js"></script>
+  <script defer src="admin.js"></script>
+</head>
+<body>
+  <header>
+    <h1><img src="logo.png" alt="Logo" class="logo"> Admin Dashboard</h1>
+    <nav>
+      <a href="index.html" class="btn">Back to Store</a>
+    </nav>
+  </header>
 
-function logout() {
-  auth.signOut();
-}
+  <main>
+    <h2>Manage Products</h2>
+    <form id="product-form">
+      <input type="text" id="name" placeholder="Product Name" required>
+      <input type="number" id="price" placeholder="Price" required>
+      <input type="number" id="quantity" placeholder="Quantity" required>
+      <input type="text" id="image" placeholder="Image URL" required>
+      <button type="submit" class="btn">Add / Update Product</button>
+    </form>
 
-function addProduct() {
-  db.collection("products").add({
-    name: pname.value,
-    price: parseFloat(pprice.value),
-    discount: parseFloat(pdiscount.value),
-    quantity: parseInt(pqty.value),
-    image: pimage.value
-  }).then(() => {
-    pname.value = pprice.value = pdiscount.value = pqty.value = pimage.value = "";
-  });
-}
-
-function deleteProduct(id) {
-  if (confirm("Delete product?")) {
-    db.collection("products").doc(id).delete();
-  }
-}
-
-function loadAdminProducts() {
-  const adminList = document.getElementById("admin-products");
-  db.collection("products").onSnapshot(snapshot => {
-    adminList.innerHTML = "";
-    snapshot.forEach(doc => {
-      const p = doc.data();
-      adminList.innerHTML += `
-        <div>
-          <b>${p.name}</b> - $${p.price} (Stock: ${p.quantity})
-          <button onclick="deleteProduct('${doc.id}')">Delete</button>
-        </div>
-      `;
-    });
-  });
-}
+    <div class="product-grid" id="admin-product-list"></div>
+  </main>
+</body>
+</html>
