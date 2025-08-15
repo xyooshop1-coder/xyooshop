@@ -1,50 +1,32 @@
-function renderProduct(doc) {
-  const p = doc.data();
-  if (!p.name.toLowerCase().includes(searchInput.value.toLowerCase())) return;
+const productList = document.getElementById('product-list');
+const paypalLink = "https://www.paypal.me/JhonJoross";
 
-  let stockBadge = "";
-  let buyButton = "";
+db.collection("products").onSnapshot(snapshot => {
+    productList.innerHTML = '';
+    snapshot.forEach(doc => {
+        const product = doc.data();
+        const card = document.createElement('div');
+        card.className = 'product-card';
 
-  if (p.quantity > 0) {
-    buyButton = `<button class="buy-btn" onclick="buyProduct('${doc.id}', ${p.price})">Buy Now</button>`;
-  } else {
-    stockBadge = `<div class="out-of-stock-badge">Out of Stock</div>`;
-    buyButton = `<button class="buy-btn out" disabled>Out of Stock</button>`;
-  }
+        if (product.quantity <= 0) {
+            card.classList.add('out-of-stock');
+        }
 
-  productList.innerHTML += `
-    <div class="product ${p.quantity <= 0 ? 'out-product' : ''}">
-      <div class="product-img-container">
-        ${stockBadge}
-        <img src="${p.image}" alt="${p.name}">
-      </div>
-      <h3>${p.name}</h3>
-      ${p.discount > 0 ? `<p class="discount">Save $${p.discount}</p>` : ""}
-      <p class="price">$${p.price}</p>
-      <p class="stock">Stock: ${p.quantity}</p>
-      ${buyButton}
-    </div>
-  `;
-}
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>₱${product.price}</p>
+            <button class="btn" ${product.quantity <= 0 ? 'disabled' : ''}>
+                Buy Now
+            </button>
+        `;
 
-function buyProduct(id, price) {
-  db.collection("products").doc(id).get().then(doc => {
-    if (!doc.exists || doc.data().quantity <= 0) {
-      alert("Sorry, this product is out of stock.");
-      return;
-    }
-    if (confirm(`Proceed to PayPal to pay $${price}?`)) {
-      // Force USD
-      window.open(`https://www.paypal.com/paypalme/JhonJoross/${price}?currency_code=USD`, "_blank");
+        card.querySelector('button').addEventListener('click', () => {
+            if (product.quantity > 0) {
+                window.location.href = `${paypalLink}/${product.price}`;
+            }
+        });
 
-      setTimeout(() => {
-        const productRef = db.collection("products").doc(id);
-        db.runTransaction(t => t.get(productRef).then(doc => {
-          if (doc.exists && doc.data().quantity > 0) {
-            t.update(productRef, { quantity: doc.data().quantity - 1 });
-          }
-        }));
-      }, 3000);
-    }
-  });
-}
+        productList.appendChild(card);
+    });
+});
