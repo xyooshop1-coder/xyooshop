@@ -1,0 +1,75 @@
+/* Base Styles */
+:root {
+  --brand: #6fbf73;
+  --brand2: #57a85c;
+  --bg: #f4f9f4;
+  --ink: #1e2b22;
+  --muted: #6a7b6d;
+  --card: #fff;
+  --error: #e45d5d;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Shared Components */
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Storefront Specific */
+header {
+  background: var(--brand);
+  color: #fff;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.login-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ffffff33;
+  color: white;
+  border: 1px solid #ffffff66;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Login Page Specific */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.login-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 400px;
+}
+
+.error {
+  color: var(--error);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Add all other styles from your original design */
