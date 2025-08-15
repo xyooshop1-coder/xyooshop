@@ -1,29 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard - Xyoo GAG Store</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Xyoo GAG Store</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <h2>Admin Dashboard</h2>
-  <button onclick="logout()">Logout</button>
+<body data-page="admin">
+  <header class="site-header">
+    <div class="brand">
+      <img src="logo.png" alt="" class="logo" onerror="this.style.display='none'"/>
+      <h1>Admin Dashboard</h1>
+    </div>
+    <nav class="nav-right">
+      <a class="btn ghost" href="index.html">← Back to Store</a>
+      <button id="btnLogout" class="btn danger">Logout</button>
+    </nav>
+  </header>
 
-  <div>
-    <input id="pname" placeholder="Product Name">
-    <input id="pprice" placeholder="Price" type="number">
-    <input id="pdiscount" placeholder="Discount" type="number">
-    <input id="pqty" placeholder="Quantity" type="number">
-    <input id="pimage" placeholder="Image URL">
-    <button onclick="addProduct()">Add Product</button>
-  </div>
+  <main class="content">
+    <section class="card glass">
+      <h2>Add / Edit Product</h2>
+      <div class="grid form-grid">
+        <div class="field">
+          <label>Name</label>
+          <input id="pname" class="input" placeholder="Kitsune" />
+        </div>
+        <div class="field">
+          <label>Image URL</label>
+          <input id="pimage" class="input" placeholder="https://..." />
+        </div>
+        <div class="field">
+          <label>Price (USD)</label>
+          <input id="pprice" class="input" type="number" step="0.01" min="0" placeholder="39.99" />
+        </div>
+        <div class="field">
+          <label>Discount (USD)</label>
+          <input id="pdiscount" class="input" type="number" step="0.01" min="0" placeholder="5.00" />
+        </div>
+        <div class="field">
+          <label>Quantity</label>
+          <input id="pqty" class="input" type="number" step="1" min="0" placeholder="10" />
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="pactive" class="input">
+            <option value="true">Active</option>
+            <option value="false">Hidden</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <button id="btnSave" class="btn primary">Save Product</button>
+        <button id="btnClear" class="btn subtle">Clear</button>
+      </div>
+      <div id="editInfo" class="muted"></div>
+    </section>
 
-  <div id="admin-products"></div>
+    <section class="card glass">
+      <h2>Products</h2>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Preview</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Qty</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminProducts"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
+  <!-- Firebase & App -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="firebase-config.js"></script>
-  <script src="admin.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
