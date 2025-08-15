@@ -1,32 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Xyoo GAG Store</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="firebase-config.js"></script>
-  <script defer src="admin.js"></script>
-</head>
-<body>
-  <header>
-    <h1><img src="logo.png" alt="Logo" class="logo"> Admin Dashboard</h1>
-    <nav>
-      <a href="index.html" class="btn">Back to Store</a>
-    </nav>
-  </header>
+const adminProductList = document.getElementById('admin-product-list');
+const productForm = document.getElementById('product-form');
 
-  <main>
-    <h2>Manage Products</h2>
-    <form id="product-form">
-      <input type="text" id="name" placeholder="Product Name" required>
-      <input type="number" id="price" placeholder="Price" required>
-      <input type="number" id="quantity" placeholder="Quantity" required>
-      <input type="text" id="image" placeholder="Image URL" required>
-      <button type="submit" class="btn">Add / Update Product</button>
-    </form>
+db.collection("products").onSnapshot(snapshot => {
+    adminProductList.innerHTML = '';
+    snapshot.forEach(doc => {
+        const product = doc.data();
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>₱${product.price} | Qty: ${product.quantity}</p>
+            <button class="btn delete-btn">Delete</button>
+        `;
 
-    <div class="product-grid" id="admin-product-list"></div>
-  </main>
-</body>
-</html>
+        card.querySelector('.delete-btn').addEventListener('click', () => {
+            db.collection("products").doc(doc.id).delete();
+        });
+
+        adminProductList.appendChild(card);
+    });
+});
+
+productForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const image = document.getElementById('image').value;
+
+    db.collection("products").add({ name, price, quantity, image });
+    productForm.reset();
+});
