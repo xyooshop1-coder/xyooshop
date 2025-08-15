@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Xyoo GAG Store</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+  <script defer src="firebase-config.js"></script>
+  <script defer src="store.js"></script>
 </head>
-<body data-page="store">
-  <header class="site-header">
-    <div class="brand">
-      <!-- Put a file named logo.png in the repo if you want an actual image -->
-      <img src="logo.png" alt="" class="logo" onerror="this.style.display='none'"/>
-      <h1>Xyoo GAG Store</h1>
-    </div>
-    <nav class="nav-right">
-      <a class="btn ghost" href="login.html">Admin Login</a>
+<body>
+  <header>
+    <h1><img src="logo.png" alt="Logo" class="logo"> Xyoo GAG Store</h1>
+    <nav>
+      <a href="login.html" class="btn login-btn">Admin Login</a>
     </nav>
   </header>
 
-  <section class="toolbar">
-    <input id="search" class="input" type="text" placeholder="Search products…" />
-  </section>
-
-  <main id="product-list" class="grid"></main>
-
-  <!-- Firebase & App -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="script.js"></script>
+  <main>
+    <div class="product-grid" id="product-list"></div>
+  </main>
 </body>
 </html>
